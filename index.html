@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Danny Robinson Sucapuca Ventura · Academia IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#05070d; --card:#0c1220; --line:rgba(0,229,255,.18);
+  --cyan:#00e5ff; --blue:#4d8dff; --mag:#ff2bd6; --amber:#ffb020;
+  --txt:#eaf3ff; --muted:#9bb0cc; --ok:#32f08c; --bad:#ff4d6d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-family:Outfit,system-ui,sans-serif;min-height:100%}
+body{overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input{font-family:inherit}
+a{color:var(--cyan)}
+
+/* LOGIN */
+#gate{position:fixed;inset:0;z-index:80;display:grid;place-items:center;
+  background:#03040a url("img/hero.jpg") center/cover no-repeat;}
+#gate::before{content:"";position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(5,7,13,.55),rgba(5,7,13,.92) 70%)}
+.gate-box{position:relative;z-index:1;text-align:center;padding:32px 28px;max-width:920px;width:92%}
+.kicker{letter-spacing:.28em;text-transform:uppercase;color:var(--cyan);font-size:13px;font-weight:600;margin-bottom:14px}
+.mega{font-family:Syne,sans-serif;font-weight:800;line-height:.92;font-size:clamp(38px,8vw,92px);
+  background:linear-gradient(180deg,#fff 20%,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 40px rgba(0,229,255,.15)}
+.sub{margin:18px auto 28px;color:var(--muted);font-size:18px;max-width:520px}
+.login-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.login-row input{background:rgba(12,18,32,.8);border:1px solid var(--line);color:#fff;font-size:22px;
+  letter-spacing:.4em;text-align:center;padding:16px 18px;border-radius:14px;width:220px;outline:none}
+.login-row input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,229,255,.15)}
+.btn{background:linear-gradient(90deg,var(--cyan),var(--blue));color:#041018;border:0;font-weight:700;
+  padding:16px 26px;border-radius:14px;cursor:pointer;font-size:16px}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--cyan);border:1px solid var(--line)}
+.err{color:var(--bad);min-height:22px;margin-top:12px;font-weight:600}
+.hint{margin-top:18px;color:#6e829e;font-size:13px}
+
+/* APP */
+#app{display:none}
+.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);
+  background:rgba(5,7,13,.72);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;padding:12px 6vw;gap:12px}
+.brand{font-family:Syne,sans-serif;font-weight:800;font-size:15px;letter-spacing:.04em}
+.brand span{color:var(--cyan)}
+nav{display:flex;gap:16px;flex-wrap:wrap;font-size:13px}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--cyan)}
+.wrap{width:min(1180px,92vw);margin:0 auto}
+
+.hero{position:relative;min-height:88vh;display:grid;align-items:end;
+  background:#05070d url("img/hero.jpg") center/cover no-repeat}
+.hero::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(180deg,rgba(5,7,13,.2) 10%,rgba(5,7,13,.92) 78%)}
+.hero-inner{position:relative;z-index:1;padding:8vh 6vw 8vh}
+.hero h1{font-family:Syne,sans-serif;font-weight:800;font-size:clamp(42px,9vw,108px);line-height:.9;max-width:18ch}
+.hero h1 em{font-style:normal;color:var(--cyan)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 10px}
+.chip{border:1px solid var(--line);background:rgba(0,229,255,.08);color:var(--cyan);
+  padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600}
+.lead{font-size:clamp(18px,2.2vw,24px);color:#c9d8ee;max-width:62ch;margin-top:10px}
+
+section{padding:88px 0}
+h2{font-family:Syne,sans-serif;font-size:clamp(28px,5vw,52px);line-height:1;margin-bottom:12px}
+h2 b{color:var(--cyan)}
+.sec-k{color:var(--amber);letter-spacing:.22em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:10px}
+p{color:var(--muted);line-height:1.65}
+
+.videos{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px}
+@media (max-width:860px){.videos{grid-template-columns:1fr}}
+.vcard{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.vcard iframe{width:100%;aspect-ratio:16/9;border:0;display:block}
+.vcard .meta{padding:18px 20px}
+.vcard h3{font-size:18px;margin-bottom:6px}
+.vcard p{font-size:14px}
+
+/* RECURSO */
+.lab{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:28px}
+@media (max-width:900px){.lab{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px}
+.modes{display:flex;gap:8px;margin:12px 0 16px}
+.modes button{flex:1;padding:10px;border-radius:12px;border:1px solid var(--line);background:#10182a;color:var(--txt);cursor:pointer}
+.modes button.on{background:rgba(0,229,255,.12);border-color:var(--cyan);color:var(--cyan);font-weight:700}
+.arena{position:relative;height:320px;border-radius:16px;background:
+  linear-gradient(#081018,#0a1628);border:1px solid var(--line);overflow:hidden}
+.grid-bg{position:absolute;inset:0;background-image:
+  linear-gradient(rgba(0,229,255,.08) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(0,229,255,.08) 1px,transparent 1px);background-size:40px 40px}
+.bot{position:absolute;width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(180deg,var(--cyan),var(--blue));box-shadow:0 0 18px rgba(0,229,255,.55);
+  display:grid;place-items:center;font-size:20px;transition:left .35s,top .35s,transform .25s}
+.obs{position:absolute;width:46px;height:46px;border-radius:8px;background:#2a3148;border:2px dashed var(--mag)}
+.goal{position:absolute;width:36px;height:36px;border-radius:50%;background:rgba(50,240,140,.25);border:2px solid var(--ok)}
+.cmds{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.cmds button{background:#10182a;border:1px solid var(--line);color:#fff;padding:10px 12px;border-radius:10px;cursor:pointer}
+.log{font-family:"JetBrains Mono",monospace;font-size:12px;color:#8fdbff;min-height:44px;margin-top:10px}
+.pillars{display:grid;gap:12px}
+.pillar{padding:16px;border-radius:16px;background:#10182a;border:1px solid var(--line)}
+.pillar strong{display:block;color:#fff;font-size:16px;margin-bottom:4px}
+.pillar span{color:var(--cyan);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+
+/* QUIZ */
+.q{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin:16px 0}
+.q h3{font-size:18px;margin-bottom:12px}
+.opts label{display:block;padding:10px 12px;border-radius:12px;border:1px solid transparent;margin:6px 0;cursor:pointer;color:#d7e6f8}
+.opts label:hover{background:#10182a}
+.opts input{margin-right:8px}
+.q.ok{border-color:var(--ok)}
+.q.bad{border-color:var(--bad)}
+.scorebox{display:none;margin-top:24px;padding:28px;border-radius:24px;
+  background:linear-gradient(180deg,#10182a,#0c1220);border:1px solid var(--cyan);text-align:center}
+.scorebox .big{font-family:Syne,sans-serif;font-size:clamp(48px,10vw,96px);color:var(--cyan)}
+
+/* PROJECTS */
+#proyectos{display:none}
+.grid5{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:28px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+.pcard img{width:100%;height:180px;object-fit:cover}
+.pcard .body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
+.pcard h3{font-size:20px;margin:6px 0 8px}
+.pcard p{font-size:14px;flex:1}
+.pick{margin-top:14px}
+.picked{outline:2px solid var(--cyan);box-shadow:0 0 0 6px rgba(0,229,255,.12)}
+#eleccion{display:none;margin-top:28px;padding:28px;border-radius:22px;border:1px solid var(--amber);background:#14100a}
+footer{padding:40px 6vw 70px;color:#6e829e;font-size:13px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-box">
+    <div class="kicker">Acceso personal · contraseña 3045</div>
+    <div class="mega">DANNY<br>ROBINSON<br>SUCAPUCA<br>VENTURA</div>
+    <p class="sub">Tu espacio de programación, apps, inteligencia artificial y robótica virtual.</p>
+    <div class="login-row">
+      <input id="pwd" type="password" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off" />
+      <button class="btn" id="enterBtn">Entrar</button>
+    </div>
+    <div class="err" id="err"></div>
+    <p class="hint">Contraseña del estudiante: <b style="color:#fff">3045</b></p>
+  </div>
+</div>
+
+<div id="app">
+  <div class="top">
+    <div class="brand">DANNY ROBINSON <span>SUCAPUCA VENTURA</span></div>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#videos">Videos</a>
+      <a href="#recurso">Laboratorio</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#proyectos">Proyectos</a>
+    </nav>
+  </div>
+
+  <header class="hero" id="inicio">
+    <div class="hero-inner">
+      <div class="kicker">Ruta 2026 · Apps · IA · Robótica virtual</div>
+      <h1>Hola, <em>Danny Robinson Sucapuca Ventura</em></h1>
+      <div class="chips">
+        <span class="chip">Programación</span>
+        <span class="chip">Desarrollo de apps</span>
+        <span class="chip">Inteligencia artificial</span>
+        <span class="chip">Robótica (en computadora)</span>
+      </div>
+      <p class="lead">Vas a ver dos videos, practicar en un laboratorio virtual creado para ti, responder 10 preguntas de nivel medio y al final elegir el proyecto con el que podrías emprender.</p>
+    </div>
+  </header>
+
+  <section id="videos">
+    <div class="wrap">
+      <div class="sec-k">Paso 1 · Mira con atención</div>
+      <h2>Tus videos, <b>Danny</b></h2>
+      <p>El primero habla de cómo la IA salta de la pantalla a los robots. El segundo, de lo que hace un programador moderno en 2026. Empieza el primero en el minuto 7:08, como pediste.</p>
+      <div class="videos">
+        <article class="vcard">
+          <iframe src="https://www.youtube.com/embed/6YCdyevQIIk?start=428" title="La IA y los robots van a provocar el mayor boom económico de la historia" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="meta">
+            <h3>La IA y los robots: el boom económico</h3>
+            <p>Canal Si lo hubiera sabido. Por qué la revolución real no está en el chatbot, sino en máquinas que perciben, aprenden y trabajan. Datos sintéticos, sim-to-real y cooperación humano + robot + IA.</p>
+          </div>
+        </article>
+        <article class="vcard">
+          <iframe src="https://www.youtube.com/embed/S9g76vQA1bU" title="Esto es lo que hace un programador moderno en 2026" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="meta">
+            <h3>Qué hace un programador moderno en 2026</h3>
+            <p>Canal Fazt. Del autocompletado (Copilot) a los agentes que editan archivos (Cursor, Claude Code). MCP, skills y la diferencia entre programar con IA y el “vibe coding”.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="recurso">
+    <div class="wrap">
+      <div class="sec-k">Recurso original · solo software</div>
+      <h2>Laboratorio virtual de <b>Danny</b></h2>
+      <p>No hay taller de robótica física. Por eso este laboratorio vive en la computadora o el celular: aquí comparas un robot tradicional (reglas fijas) con un robot con IA (se adapta). Es el mismo salto que explica el primer video.</p>
+      <div class="lab">
+        <div class="panel">
+          <strong style="color:#fff">Robot de Danny · modo de control</strong>
+          <div class="modes">
+            <button class="on" id="mTrad">Tradicional</button>
+            <button id="mIA">Con IA</button>
+          </div>
+          <div class="arena" id="arena">
+            <div class="grid-bg"></div>
+            <div class="obs" id="obs" style="left:200px;top:140px"></div>
+            <div class="goal" id="goal" style="left:340px;top:140px"></div>
+            <div class="bot" id="bot">🤖</div>
+          </div>
+          <div class="cmds">
+            <button onclick="cmd('fwd')">Avanzar</button>
+            <button onclick="cmd('left')">Girar izq.</button>
+            <button onclick="cmd('right')">Girar der.</button>
+            <button onclick="autoPath()">Ir a la meta</button>
+            <button onclick="resetBot()">Reiniciar</button>
+          </div>
+          <div class="log" id="log">> Listo, Danny. Elige un modo y da órdenes.</div>
+        </div>
+        <div class="pillars">
+          <div class="pillar"><span>01 Programación</span><strong>Es el idioma</strong><p>Sin código no hay app, ni IA, ni robot virtual. El programador de 2026 dirige agentes, no solo escribe línea a línea.</p></div>
+          <div class="pillar"><span>02 Apps</span><strong>Es el producto</strong><p>Una app en el celular puede enseñar, cobrar una suscripción o ayudar a alguien. Ahí nace un ingreso o un impacto social.</p></div>
+          <div class="pillar"><span>03 Inteligencia artificial</span><strong>Es el cerebro</strong><p>Un agente no solo responde: crea archivos, se conecta a servicios (MCP) y se adapta. Eso es lo que viste en Fazt.</p></div>
+          <div class="pillar"><span>04 Robótica virtual</span><strong>Es el cuerpo simulado</strong><p>Los robots de verdad se entrenan con datos sintéticos. Tú puedes construir el simulador y el curso, sin comprar un motor.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="wrap">
+      <div class="sec-k">Paso 2 · Nivel medio · 16 años</div>
+      <h2>Quiz para <b>Danny Robinson Sucapuca Ventura</b></h2>
+      <p>Diez preguntas basadas en los dos videos. Elige una opción. Al enviar se califica solo y se desbloquean tus 5 proyectos.</p>
+      <form id="quizForm"></form>
+      <button class="btn" id="gradeBtn" style="margin-top:12px">Calificar a Danny</button>
+      <div class="scorebox" id="scorebox"></div>
+    </div>
+  </section>
+
+  <section id="proyectos">
+    <div class="wrap">
+      <div class="sec-k">Paso 3 · Elige tu camino</div>
+      <h2>Cinco proyectos de <b>Danny</b></h2>
+      <p>Todo se hace con computadora o celular. Nada de taller físico. Cada uno puede volverse un ingreso pequeño o un emprendimiento social. Elige uno.</p>
+      <div class="grid5">
+        <article class="pcard" data-p="CodeLab Danny">
+          <img src="img/codelab.jpg" alt="CodeLab Danny, app para aprender a programar" />
+          <div class="body">
+            <span class="chip">App educativa</span>
+            <h3>CodeLab Danny</h3>
+            <p>Danny crea una app de celular con retos diarios de código y un tutor de IA. Otros estudiantes practican 10 minutos al día. Ingreso: versión gratis + suscripción para colegios.</p>
+            <button class="btn pick">Elegir este</button>
+          </div>
+        </article>
+        <article class="pcard" data-p="RoboSim Academy de Danny">
+          <img src="img/robosim.jpg" alt="Simulador virtual de robótica" />
+          <div class="body">
+            <span class="chip">Robótica virtual + curso</span>
+            <h3>RoboSim Academy de Danny</h3>
+            <p>Danny diseña un curso web donde se programan robots 3D en el navegador: sensores, rutas y datos sintéticos. Sin hardware. Ingreso: licencias anuales a colegios.</p>
+            <button class="btn pick">Elegir este</button>
+          </div>
+        </article>
+        <article class="pcard" data-p="MentorIA Danny">
+          <img src="img/mentoria.jpg" alt="Tutor de inteligencia artificial" />
+          <div class="body">
+            <span class="chip">IA educativa</span>
+            <h3>MentorIA Danny</h3>
+            <p>Chatbot en español que explica mates, ciencias y programación a secundaria. Emprendimiento social: primera versión gratis para su comunidad, luego plan para escuelas.</p>
+            <button class="btn pick">Elegir este</button>
+          </div>
+        </article>
+        <article class="pcard" data-p="Ojos que Ayudan — Danny">
+          <img src="img/ojosia.jpg" alt="App de visión por computadora" />
+          <div class="body">
+            <span class="chip">Visión por computadora</span>
+            <h3>Ojos que Ayudan — Danny</h3>
+            <p>App de celular que describe el entorno en voz alta a personas con discapacidad visual. Solo cámara + IA. Impacto social; alianzas con ONGs o municipalidades.</p>
+            <button class="btn pick">Elegir este</button>
+          </div>
+        </article>
+        <article class="pcard" data-p="AppEmprende Joven de Danny">
+          <img src="img/appemprende.jpg" alt="Marketplace de mini-apps educativas" />
+          <div class="body">
+            <span class="chip">Emprendimiento</span>
+            <h3>AppEmprende Joven de Danny</h3>
+            <p>Plataforma web donde jóvenes publican mini-apps educativas. Danny construye el marketplace y cobra una comisión pequeña cuando un colegio compra una app.</p>
+            <button class="btn pick">Elegir este</button>
+          </div>
+        </article>
+      </div>
+      <div id="eleccion"></div>
+    </div>
+  </section>
+
+  <footer>
+    Espacio personalizado de <b style="color:#fff">Danny Robinson Sucapuca Ventura</b> · acceso 3045 · programación, apps, IA y robótica virtual.
+  </footer>
+</div>
+
+<script>
+const PASS="3045";
+const name="Danny Robinson Sucapuca Ventura";
+const enter=()=>{
+  const v=document.getElementById("pwd").value.trim();
+  if(v===PASS){
+    document.getElementById("gate").style.display="none";
+    document.getElementById("app").style.display="block";
+    window.scrollTo(0,0);
+  }else{
+    document.getElementById("err").textContent="Contraseña incorrecta. La de Danny es 3045.";
+  }
+};
+document.getElementById("enterBtn").onclick=enter;
+document.getElementById("pwd").addEventListener("keydown",e=>{if(e.key==="Enter")enter()});
+
+/* LAB */
+let mode="trad", dir=0, x=24, y=140;
+const bot=document.getElementById("bot");
+const log=document.getElementById("log");
+function place(){bot.style.left=x+"px";bot.style.top=y+"px";bot.style.transform=`rotate(${dir}deg)`}
+function resetBot(){x=24;y=140;dir=0;place();log.textContent="> Reiniciado. Danny, prueba otra vez."}
+resetBot();
+document.getElementById("mTrad").onclick=function(){mode="trad";this.classList.add("on");document.getElementById("mIA").classList.remove("on");log.textContent="> Modo tradicional: si hay un obstáculo, se detiene. Hay que reprogramar."};
+document.getElementById("mIA").onclick=function(){mode="ia";this.classList.add("on");document.getElementById("mTrad").classList.remove("on");log.textContent="> Modo IA: percibe, gira y busca otro camino. Como en el video de los robots."};
+function hits(nx,ny){const obsEl=document.getElementById("obs");
+  const ox=parseInt(obsEl.style.left,10), oy=parseInt(obsEl.style.top,10);
+  return nx<ox+46 && nx+42>ox && ny<oy+46 && ny+42>oy}
+function cmd(c){
+  if(c==="left"){dir=(dir-90+360)%360;place();log.textContent="> Giró a la izquierda." ;return}
+  if(c==="right"){dir=(dir+90)%360;place();log.textContent="> Giró a la derecha.";return}
+  const step=40; let nx=x, ny=y;
+  if(dir===0) nx+=step; else if(dir===90) ny+=step; else if(dir===180) nx-=step; else ny-=step;
+  nx=Math.max(8,Math.min(nx,340)); ny=Math.max(8,Math.min(ny,270));
+  if(hits(nx,ny)){
+    if(mode==="trad"){log.textContent="> ERROR. Robot tradicional: obstáculo. Hay que parar y reprogramar, Danny.";}
+    else {dir=(dir+90)%360;place();log.textContent="> IA: detectó el obstáculo y cambió de ruta.";}
+    return;
+  }
+  x=nx;y=ny;place();
+  const g=document.getElementById("goal");
+  if(Math.abs(x-parseInt(g.style.left))<36 && Math.abs(y-parseInt(g.style.top))<36){
+    log.textContent="> Meta alcanzada. Bien, Danny Robinson Sucapuca Ventura.";
+  } else log.textContent="> Avanzó.";
+}
+function autoPath(){
+  if(mode==="trad"){log.textContent="> Tradicional no improvisa. Solo puede avanzar en línea recta hasta chocar.";}
+  else{
+    x=24;y=80;dir=0;place();
+    setTimeout(()=>{x=340;place();log.textContent="> Agente IA: planificó un desvío y llegó. Eso es un agente, no un chat."},400);
+  }
+}
+
+/* QUIZ */
+const Q=[
+  {q:"Según el video de Si lo hubiera sabido, ¿dónde ocurrirá la verdadera revolución de la IA?",
+   o:["En chatbots cada vez más conversadores, solo en la pantalla.","En el mundo físico: máquinas que trabajan, se adaptan y toman decisiones.","Únicamente en redes sociales y filtros.","Solo en videojuegos de ciencia ficción."],a:1},
+  {q:"¿Cuál era el gran límite de los robots tradicionales de fábrica?",
+   o:["No tenían electricidad.","Eran demasiado baratos.","Repetían la misma tarea con reglas fijas; si algo cambiaba, había que reprogramarlos.","Solo funcionaban de noche."],a:2},
+  {q:"En el ejemplo de las plantas solares (drones + IA + robots), ¿qué hace el ser humano?",
+   o:["Ya no hace nada.","Supervisa, valida diagnósticos críticos y se queda con las intervenciones más complejas.","Solo limpia paneles a mano.","Programa el robot cada 5 minutos."],a:1},
+  {q:"¿Por qué entrenar robots es más difícil que entrenar un chatbot como ChatGPT?",
+   o:["Porque ChatGPT es más antiguo.","Porque los robots no usan datos.","ChatGPT se alimenta de internet; los robots necesitan datos del mundo físico, escasos, caros y a veces peligrosos.","Porque no existen programadores de robots."],a:2},
+  {q:"¿Qué es el salto «sim to real» del que habla el video?",
+   o:["Pasar un videojuego a la televisión.","Que un robot entrenado en simulación también funcione en el mundo real, que es caótico.","Traducir un programa de Python a Java.","Subir un robot a la nube."],a:1},
+  {q:"Según McKinsey en ese video, si humanos, robots y agentes de IA cooperan hacia 2030 en EE. UU., se podrían desbloquear…",
+   o:["100 dólares.","2,9 billones de dólares al año.","Cero, porque todo se destruye.","Solo likes en internet."],a:1},
+  {q:"En el video de Fazt, ¿cuál fue el primer gran cambio de IA para quienes programan?",
+   o:["Las impresoras 3D.","El autocompletado inteligente, como GitHub Copilot (pulsar Tab y sale un bloque).","El WiFi 6.","Los emojis en el código."],a:1},
+  {q:"¿Qué hace un «agente» de IA (por ejemplo en Cursor o Claude Code) que un chat normal no hace?",
+   o:["Solo cuenta chistes.","Ejecuta acciones: crea, edita o borra archivos y puede correr el proyecto.","Reemplaza el teclado físico.","Traduce automáticamente a klingon."],a:1},
+  {q:"¿Qué es MCP (Model Context Protocol), según Fazt?",
+   o:["Un lenguaje de programación nuevo.","Un protocolo para conectar la IA con servicios externos (bases de datos, Gmail, Slack, etc.).","Un tipo de robot humanoide.","El nombre de un virus."],a:1},
+  {q:"¿Por qué Fazt separa al programador que usa IA de las plataformas de «vibe coding» (Lovable, v0)?",
+   o:["No hay ninguna diferencia.","El programador tiene más control y puede construir sistemas grandes; esas plataformas están más limitadas para quien no quiere lo técnico.","El vibe coding es solo para robótica física.","Los programadores tienen prohibido usar IA."],a:1}
+];
+const form=document.getElementById("quizForm");
+Q.forEach((item,i)=>{
+  const d=document.createElement("div");d.className="q";d.id="q"+i;
+  d.innerHTML=`<h3>${i+1}. ${item.q}</h3><div class="opts">${item.o.map((t,j)=>`<label><input type="radio" name="q${i}" value="${j}" /> ${t}</label>`).join("")}</div>`;
+  form.appendChild(d);
+});
+document.getElementById("gradeBtn").onclick=()=>{
+  let score=0, missing=0;
+  Q.forEach((item,i)=>{
+    const sel=form.querySelector(`input[name="q${i}"]:checked`);
+    const box=document.getElementById("q"+i);
+    box.classList.remove("ok","bad");
+    if(!sel){missing++;box.classList.add("bad");return}
+    if(+sel.value===item.a){score++;box.classList.add("ok")}
+    else box.classList.add("bad");
+  });
+  if(missing){alert("Danny, responde las "+missing+" que te faltan.");return}
+  const pct=Math.round(score/10*100);
+  let msg=pct>=80?"Excelente. Ya tienes base para elegir un proyecto ambicioso.":pct>=60?"Bien. Revisa las que marcamos en rojo y sigue.":"Hay que volver a los videos. El laboratorio te ayuda a entender el salto tradicional vs IA.";
+  const box=document.getElementById("scorebox");
+  box.style.display="block";
+  box.innerHTML=`<div class="kicker">Calificación de Danny Robinson Sucapuca Ventura</div>
+    <div class="big">${score}/10</div>
+    <p style="color:#fff;font-size:20px;margin:8px 0">${pct}% · ${msg}</p>
+    <p>Las correctas quedan en verde y las otras en rojo. Abajo ya puedes elegir tu proyecto.</p>`;
+  document.getElementById("proyectos").style.display="block";
+  box.scrollIntoView({behavior:"smooth"});
+};
+
+document.querySelectorAll(".pcard .pick").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".pcard").forEach(c=>c.classList.remove("picked"));
+    const card=btn.closest(".pcard");
+    card.classList.add("picked");
+    const title=card.dataset.p;
+    const el=document.getElementById("eleccion");
+    el.style.display="block";
+    el.innerHTML=`<div class="kicker">Proyecto elegido</div>
+      <h3 style="font-family:Syne,sans-serif;font-size:32px;color:var(--amber);margin:8px 0">${title}</h3>
+      <p style="color:#fff">Danny Robinson Sucapuca Ventura va a desarrollar este proyecto solo con computadora y celular. Sin taller físico. La meta: que sea útil de verdad y pueda generar un ingreso o un impacto social.</p>`;
+    el.scrollIntoView({behavior:"smooth"});
+  };
+});
+</script>
+</body>
+</html>
