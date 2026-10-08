@@ -43,7 +43,7 @@ a{color:var(--cyan)}
 .hint{margin-top:18px;color:#6e829e;font-size:13px}
 
 /* APP */
-#app{display:none}
+#app{display:block}
 .top{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);
   background:rgba(5,7,13,.72);border-bottom:1px solid var(--line);
   display:flex;align-items:center;justify-content:space-between;padding:12px 6vw;gap:12px}
@@ -132,20 +132,6 @@ footer{padding:40px 6vw 70px;color:#6e829e;font-size:13px;border-top:1px solid v
 </style>
 </head>
 <body>
-
-<div id="gate">
-  <div class="gate-box">
-    <div class="kicker">Acceso personal · contraseña 3045</div>
-    <div class="mega">DANNY<br>ROBINSON<br>SUCAPUCA<br>VENTURA</div>
-    <p class="sub">Tu espacio de programación, apps, inteligencia artificial y robótica virtual.</p>
-    <div class="login-row">
-      <input id="pwd" type="password" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off" />
-      <button class="btn" id="enterBtn">Entrar</button>
-    </div>
-    <div class="err" id="err"></div>
-    <p class="hint">Contraseña del estudiante: <b style="color:#fff">3045</b></p>
-  </div>
-</div>
 
 <div id="app">
   <div class="top">
@@ -307,21 +293,6 @@ footer{padding:40px 6vw 70px;color:#6e829e;font-size:13px;border-top:1px solid v
 </div>
 
 <script>
-const PASS="3045";
-const name="Danny Robinson Sucapuca Ventura";
-const enter=()=>{
-  const v=document.getElementById("pwd").value.trim();
-  if(v===PASS){
-    document.getElementById("gate").style.display="none";
-    document.getElementById("app").style.display="block";
-    window.scrollTo(0,0);
-  }else{
-    document.getElementById("err").textContent="Contraseña incorrecta. La de Danny es 3045.";
-  }
-};
-document.getElementById("enterBtn").onclick=enter;
-document.getElementById("pwd").addEventListener("keydown",e=>{if(e.key==="Enter")enter()});
-
 /* LAB */
 let mode="trad", dir=0, x=24, y=140;
 const bot=document.getElementById("bot");
